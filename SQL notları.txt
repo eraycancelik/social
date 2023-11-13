@@ -1,0 +1,68 @@
+#Servers içerisinde yeni Postgre içinde Databases kısmında yeni bir db oluştur. 
+
+#Veri tabanı içerisinde Schema altında Tables kısmında yeni bir tablo oluştur.
+
+#Column oluşturulurken 'not Null' ın işaretlenmesi ilgili column'ın her item eklendiğinde belirtilmesi gerektiği anlamına gelir. Varsayılan bir değere sahip olmaz ve her veri girişinde ilgili özelliğin girilmesi zorunludur.
+
+#Kod ile işlem için ilgili tabloda 'query tool'u çalıştır.
+
+
+
+
+SELECT * FROM products
+--products tablosunun bütün içeriğini görüntüler.
+
+SELECT * FROM products WHERE id>5;
+SELECT * FROM products WHERE price IN (60,1000,2000);
+
+--Each Line runs separatly and thats why only last line works on this code;
+
+SELECT * FROM products WHERE name LIKE 'S%';
+--Filters products only starts with 'S'
+
+SELECT * FROM products ORDER BY price; 
+--Sorts products by their price from lowest
+
+SELECT * FROM products ORDER BY price DESC;
+--Sorts products by their price from highst by the code 'DESC'
+
+SELECT * FROM products WHERE price>=640 ORDER BY price;
+--Filters products which has higher price than 640 and sorts by their price form lowest
+
+SELECT * FROM products WHERE price>=640 ORDER BY price LIMIT 3;
+--Gives only 3 items of above code output
+
+SELECT * FROM products WHERE price>=10 ORDER BY price LIMIT 14 OFFSET 3;
+
+--Gives products has higher or equal price than 10 and sorts them by thier price and shows first 14 product and 'OFFSET 3' skips first 3 item of that 14 products.
+--- Fiyatı 10'dan büyük veya eşit olan bütün ürünleri alır, ,'ORDER BY price' komutu ile bunları fiyatları düşükten yükseğe olacak şekilde sıralar, 'LIMIT 14' komutu ile bu sıralanmış listenin ilk 14 ürününü filtreler ve son olarak 'OFFSET 3' komutu ile bu son kalan 14 üründen ilk 3ünü bu listeye eklemez ve 4.den itibaren 14 ürünü listeler. Eğer kalan listede 14 item yoksa kalanların hepsini listeler.
+
+INSERT INTO products (name,price,photo_url,category) VALUES ('name',150,'url','category');
+--Veri tabanında products tablosuna yeni ürün ekler. 
+
+INSERT INTO products (name,price,photo_url,category) VALUES ('name1',price1,'url1','category1'),('name2',price2,'url2','category2'),('name3',price3,'url3','category3'),('name4',price4,'url4','category4'),('name5',price5,'url5','category5') returning *;
+
+--products tablosuna 5 item birden ekler ve 'returning *' komutu ile eklediği bütün itemleri return eder (döndürür). 'returning *' komutunda '*' yerine id,name vb column isimleri yazılmasıyla eklenen bu ürünlerin sadece istenen column'ları da döndürülebilir.
+
+DELETE FROM products WHERE name LIKE '%name%';
+--komutu name'inin içerisinde 'name' geçen bütün itemları veri tabanından siler.
+
+DELETE FROM products WHERE id IN (66,67,68,69,70);
+--komutu id'si 66,67,68,69,70 olan itemları siler.
+
+UPDATE products SET price=120, name='Arduino Uno v4' WHERE id=14;
+--komutu id'si 14 olan itemın price ve name bilgilerini günceller.
+
+UPDATE products SET name='new item' Where name LIKE 'name%';
+--komutu products tablosu içerisinde name özelliği 'name' ile başlayan itemlerin name'ini 'new item' olarak güncellenir. 
+
+UPDATE products SET is_sale=false Where price>200;
+--komutu ile price'ı 200'den büyük olan itemlerin 'is_sale' değeri false olarak güncellenir.
+
+SELECT title,content,owner_id,name FROM posts LEFT JOIN users ON posts.owner_id=users.user_id;
+--"title,content,owner_id,name" kısmı birleşmiş 2 tablodan gönderilecek verileri listeler ve listelenecek özellikler iki tabloda da olabilir.
+--"JOIN users ON posts.owner_id=users.user_id" kısmı ile iki tabloda eşleşecek veriler belirlenir.
+--Bu örnekte posttaki "owner_id" ile "user_id" verileri birbirleri ile eşleştirildiği için burada belirtilir.
+
+SELECT title,content,owner_id,name FROM posts LEFT JOIN users ON posts.owner_id=users.user_id;
+--"posts.*,email" ise bütün posts tablosuyla birlikte sadece userstan "email" sütununu alır.
